@@ -11,7 +11,7 @@ webfilter(){
  
     if [ $1 == "on" ]
     then
-        networksetup -setsocksfirewallproxy "Wi-Fi" localhost 8080; ssh -D 8080 -C -N user@example.com
+        networksetup -setsocksfirewallproxy "Wi-Fi" localhost 8080; ssh -f -D 8080 -C -N user@example.com
     elif [ $1 == "off" ]
     then
         networksetup -setsocksfirewallproxy "Wi-Fi" "" ""; networksetup -setsocksfirewallproxystate "Wi-Fi" off
