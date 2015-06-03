@@ -3,10 +3,32 @@
 # Usage: sudo webfilter [on/off]
 alias webfilter=webfilter
 
-HOST=howard@winterflake.net
+ERROR="ERROR:"
+WHOAMI=`whoami`
+HOSTFILE=/Users/$whoami/.webfilter
 PORT=8080
 
-webfilter(){
+webfilter() {
+    
+    if ! [[ HOST=`cat $HOSTFILE` ]]
+    then
+        echo "Example: username@server.com"
+        echo "Please enter your proxy details:"
+        while [ true ]
+        do
+            read input_variable
+            if [[ input_variable == *@* ]]
+            then
+                HOST=$input_variable
+                echo $HOST > $HOSTFILE
+                break;
+            else
+                echo "$ERROR Proxy details not valid."
+                echo "Please enter your proxy details:"
+            fi
+        done
+    fi
+    
     if [ $1 == "on" ]
     then
         re='^[0-9]+$'
