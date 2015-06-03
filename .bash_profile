@@ -3,6 +3,9 @@
 # Usage: sudo webfilter [on/off]
 alias webfilter=webfilter
 
+#Please edit this line to the desired host
+HOST=user@example.com
+
 webfilter(){
     if [ "$EUID" -ne 0 ]
     then
@@ -11,10 +14,14 @@ webfilter(){
  
     if [ $1 == "on" ]
     then
-        networksetup -setsocksfirewallproxy "Wi-Fi" localhost 8080; ssh -f -D 8080 -C -N user@example.com
+        networksetup -setsocksfirewallproxystate "Wi-Fi" on
+        networksetup -setsocksfirewallproxy "Wi-Fi" localhost 8080
+        ssh -f -D 8080 -C -N $HOST
     elif [ $1 == "off" ]
     then
-        networksetup -setsocksfirewallproxy "Wi-Fi" "" ""; networksetup -setsocksfirewallproxystate "Wi-Fi" off
+        kill `ps -ef | grep ssh | grep $HOST | awk '{print $2}'`
+        networksetup -setsocksfirewallproxy "Wi-Fi" "" "" 
+        networksetup -setsocksfirewallproxystate "Wi-Fi" off
     else
         echo "Usage: webfilter [on/off]"
     fi
