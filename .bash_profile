@@ -34,26 +34,45 @@ webfilter() {
             done
         fi
 
-        re='^[0-9]+$'
-        if [[ $2 == -* ]]
-        then
-            if [[ $2 == *p* ]] && [[ -n $3 ]] && [[ $3 =~ $re ]]
+        for (( i=1; i<=$#; i++ )) 
+        do
+            re='^[0-9]+$'
+            if [[ ${!i} == -p ]]
             then
-                PORT=$3
-            elif [[ $2 == *p* ]] && [[ -z $3 ]]
+                i++
+                if [[ -n ${!i} ]] && [[ ${!i} =~ $re ]]
+                then
+                    PORT=${!i}
+                    echo $PORT
+                else
+                    echo "Usage: leol"
+                fi
+            elif
             then
-                echo "Usage: webfilter on -p <port>"
-                return
-            elif [[ $2 == *p* ]] && ! [[ $3 =~ $re ]]
-            then
-                echo "Usage: webfilter on -p <port>"
-                return
+                
             fi
-        elif [[ -n $2 ]]
-        then
-            echo "Invalid Argument."
-            return
-        fi
+        done
+
+        #re='^[0-9]+$'
+        #if [[ $2 == -* ]]
+        #then
+        #    if [[ $2 == *p* ]] && [[ -n $3 ]] && [[ $3 =~ $re ]]
+        #    then
+        #        PORT=$3
+        #    elif [[ $2 == *p* ]] && [[ -z $3 ]]
+        #    then
+        #        echo "Usage: webfilter on -p <port>"
+        #        return
+        #    elif [[ $2 == *p* ]] && ! [[ $3 =~ $re ]]
+        #    then
+        #        echo "Usage: webfilter on -p <port>"
+        #        return
+        #    fi
+        #elif [[ -n $2 ]]
+        #then
+        #    echo "Invalid Argument."
+        #    return
+        #fi
         networksetup -setsocksfirewallproxystate "Wi-Fi" on
         networksetup -setsocksfirewallproxy "Wi-Fi" localhost $PORT 
         ssh -f -D $PORT -C -N $HOST
