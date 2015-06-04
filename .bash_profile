@@ -14,7 +14,7 @@ webfilter() {
     if [[ $1 == "on" ]]
     then
         
-        if [[ -z HOST=`cat $HOSTFILE` ]]
+        if [[ -n HOST=`cat $HOSTFILE` ]]
         then
             echo "$HOST"
             echo "Example: username@server.com"
