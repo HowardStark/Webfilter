@@ -1,6 +1,6 @@
 # Webfilter Command
 # Author: Howard Stark
-# Usage: sudo webfilter [on/off]
+# Usage: webfilter [on/off]
 alias webfilter=webfilter
 
 ERROR="ERROR:"
