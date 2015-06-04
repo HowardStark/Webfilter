@@ -64,7 +64,7 @@ webfilter() {
             echo "Too many arguments."
             return
         fi
-        kill `ps -ef | grep ssh | grep "ssh -f -D $PORT -C -N $HOST" | awk '{print $2}'`
+        kill `ps -ef | grep ssh | grep "ssh -f -D $PORT -C -N $HOST" | awk '{print $2}'` 2> /dev/null
         networksetup -setsocksfirewallproxy "Wi-Fi" "" ""
         networksetup -setsocksfirewallproxystate "Wi-Fi" off
     else
