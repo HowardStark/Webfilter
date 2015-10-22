@@ -1,16 +1,14 @@
 # Webfilter Command
 # Author: Howard Stark
 # Usage: webfilter [on/off]
-alias webfilter=webfilter
-
-WHOAMI=`whoami`
+WHOAMI=$(whoami)
 HOSTFILE=/Users/$WHOAMI/.webfilter
 PORT=$(sed '2q;d' $HOSTFILE 2> /dev/null)
 HOST=$(sed '1q;d' $HOSTFILE 2> /dev/null)
-underline=`tput smul`
-nounderline=`tput rmul`
-bold=`tput bold`
-normal=`tput sgr0`
+underline=$(tput smul)
+nounderline=$(tput rmul)
+bold=$(tput bold)
+normal=$(tput sgr0)
 ERROR="${bold}${underline}ERROR:${normal}${nounderline}"
 
 if [[ $1 == "on" ]]
@@ -40,7 +38,7 @@ then
 	    sed '2 s/\*/$PORT' $HOSTFILE
     fi
 
-    if [[ -z `ps -ef | grep ssh | grep "ssh -f -D $PORT -C -N $HOST"` ]]
+    if [[ -z $(ps -ef | grep ssh | grep "ssh -f -D $PORT -C -N $HOST") ]]
     then
 	    echo "$ERROR webfilter instance already running. Please run \'webfilter off\' before continuing."
 	    exit 0
@@ -84,7 +82,7 @@ then
         echo "Too many arguments."
         return
     fi
-    kill `ps -ef | grep ssh | grep "ssh -f -D $PORT -C -N $HOST" | awk '{print $2}'` 2> /dev/null
+    kill $(ps -ef | grep ssh | grep "ssh -f -D $PORT -C -N $HOST" | awk '{print $2}') 2> /dev/null
     networksetup -setsocksfirewallproxy "Wi-Fi" "" ""
     networksetup -setsocksfirewallproxystate "Wi-Fi" off
 elif [[ $1 == "--help" ]]
@@ -107,5 +105,5 @@ then
 	echo "                File is written to ~/.webfilter. Line 1 contains host that webfilter reads from, line 2 contains port"
 else
     echo "Usage: webfilter [on/off]"
-    return
+    exit
 fi
